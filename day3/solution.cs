@@ -50,48 +50,35 @@ namespace day3
             return prios;
         }
 
-        //char compareThreeRucksack(List<string> rucksacks)
-        //{
-        //    List<string> commonItems = new List<string>();
-        //    var result = rucksacks[0].Intersect(rucksacks[1]);
-        //}
+        int getPrios(char c)
+        {
+            if(Char.IsUpper(c))
+                return c-96;
+            else
+                return c-38;
+        }
 
+        int getIntersect(string[] lines)
+        {
+            var chonk = lines.Chunk(3);
+            var res = chonk.Select(chonk => 
+            { 
+                var first = chonk[0];
+                var second = chonk[1];
+                var third = chonk[2];
+                return first.Intersect(second).Intersect(third).Select(c => getPrios(c)).Sum();
+            }).Sum();
+
+            return res;
+        }
         public static void Main()
         {
             Solution s = new Solution();
 
-            List<string> rucksacks = System.IO.File.ReadAllLines("input.txt").ToList();
-            List<string> temp = new List<string>();
-
-            List<string> test = new List<string>() {"abcd", "abd", "hjk", "aion"};
-
-            var testIt = test[0].Intersect(test[1]).Intersect(test[2]);
-            System.Console.WriteLine(testIt);
-
-
-            //for(int i = 0; i<rucksacks.Count; ++i)
-            //{
-            //    if(i != 0 && i%3 == 0)
-            //    {
-            //        System.Console.WriteLine(rucksacks[i].Intersect(rucksacks[i-1].Intersect(rucksacks[i-2])).ToString());
-            //    }
-            //}
-            // Dictionary<char, int> prios = s.createPrioTable();
-            // int prioVal = 0;
-
-            // foreach (string rucksack in rucksacks)
-            // {
-            //     string firstHalf = s.halveString(rucksack).firstHalf;
-            //     string secondHalf = s.halveString(rucksack).secondHalf;
-            //     char[] common = s.compareOneRucksack(firstHalf, secondHalf).ToCharArray();
-
-            //     prioVal += prios[common[0]];
-            // }
-
-            // System.Console.WriteLine("Solution 1: " + prioVal);
-
-
-
+            //List<string> rucksacks = System.IO.File.ReadAllLines("input.txt").ToList();
+            var lines = System.IO.File.ReadAllLines("input.txt");
+            int res = s.getIntersect(lines);
+            System.Console.WriteLine(res);
         }
     }
 }
